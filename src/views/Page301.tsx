@@ -1,7 +1,7 @@
 const View = () => {
     return (
     <div className = 'home'>
-        <p>this is about component</p>
+        <p>this is Page301 component</p>
     </div>
     )
 }

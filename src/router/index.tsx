@@ -2,9 +2,9 @@ import React, {lazy} from "react"
 import Home from "../views/Home"
 // import About from "../views/About"
 
-const About = lazy(()=>import("../views/About"))
 const Page1 = lazy(()=>import("../views/Page1"))
 const Page2 = lazy(()=>import("../views/Page2"))
+const Page301 = lazy(()=>import("../views/Page301"))
 
 import { Navigate } from "react-router-dom"
 
@@ -30,17 +30,17 @@ const routes = [
             {
                 path:'page2',
                 element: withLoadingComponent(<div>page2</div>)
+            },
+            {
+                path:'page3/page301',
+                element: withLoadingComponent(<div>page301</div>)
             }
         ]
+    },
+    {
+        path:'*',
+        element: <div>404</div>
     }
-    // {
-    //     path:'/home',
-    //     element: <Home/>
-    // },
-    // {
-    //     path:'/about',
-    //     element: withLoadingComponent(<About/>)
-    // }
 ]
 
 export default routes
