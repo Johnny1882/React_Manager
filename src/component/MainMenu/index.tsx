@@ -7,7 +7,7 @@ import {
   } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import React, { useState } from 'react';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -42,6 +42,7 @@ const View: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     const navigateTo = useNavigate()
+    const currentRoute = useLocation()
 
     //Routing
     const menuClick = (e:{key:string}) => {
@@ -50,7 +51,25 @@ const View: React.FC = () => {
         navigateTo(e.key)
     }
 
-    const [openKeys, setOpenKeys] = useState(['']);
+    let firstOpenKey:string = "";
+  // 在这里进行对比   find
+    function findKey(obj:{key:string}){
+        return obj.key === currentRoute.pathname
+    }
+    // 多对比的是多个children
+    for(let i=0;i<items.length;i++){
+        // 判断找到不到
+        if(items[i]!['children'] && items[i]!['children'].length>0 && items[i]!['children'].find(findKey)){
+        firstOpenKey = items[i]!.key as string;
+        break;
+        }
+    }
+  //items[???]['children'].find(findKey)   // 这结果如果找到拿到的，就是找到的这个对象，转布尔值就是true。如果找不到转布尔值就是false
+
+  // 设置展开项的初始值
+    const [openKeys, setOpenKeys] = useState([firstOpenKey]);
+
+    // const [openKeys, setOpenKeys] = useState(['']);
     const handleOpenChange = (keys:string[]) => {
         setOpenKeys([keys[keys.length - 1]]);
     }
@@ -58,7 +77,7 @@ const View: React.FC = () => {
     return (
         <Menu 
             theme="dark" 
-            defaultSelectedKeys={['/page1']} 
+            defaultSelectedKeys={[currentRoute.pathname]} 
             mode="inline" 
             items={items} 
             onClick={menuClick}
